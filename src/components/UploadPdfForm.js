@@ -1,34 +1,34 @@
-import { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import { Form, Button } from "react-bootstrap";
+import { uploadPdf } from "../api/api";
 
-const UploadPdfForm = ({ setPdfUrl }) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+const UploadPdfForm = ({ setPdfData }) => {
+  const [file, setFile] = useState(null);
+  const handleFileChange = (event) => {
+    setFile(event.target.files[0]);
+  };
 
-  const onSubmit = async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const formData = new FormData();
-    formData.append('pdf', selectedFile);
-
     try {
-      const response = await axios.post('/api/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      setPdfUrl(response.data.fileUrl);
+      const data = await uploadPdf(file);
+      setPdfData(data);
     } catch (error) {
       console.error(error);
     }
   };
 
   return (
-    <form onSubmit={onSubmit}>
-      <div className="mb-3">
-        <label htmlFor="pdf" className="form-label">PDF-File auswählen:</label>
-        <input type="file" className="form-control" id="pdf" accept=".pdf" onChange={(event) => setSelectedFile(event.target.files[0])} />
-      </div>
-      <button type="submit" className="btn btn-primary">Hochladen</button>
-    </form>
+    <div className="UploadPdfForm">
+      <h2>PDF Upload</h2>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="formFile">
+          <Form.Label>Choose a PDF file to upload:</Form.Label>
+          <Form.Control type="file" onChange={handleFileChange} />
+        </Form.Group>
+        <Button type="submit">Upload</Button>
+      </Form>
+    </div>
   );
 };
 
