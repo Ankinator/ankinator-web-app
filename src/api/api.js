@@ -1,14 +1,16 @@
 import axios from 'axios';
 
-const API_URL = 'https://jsonplaceholder.typicode.com';
+const API_URL = 'https://example.com/api';
 
-
-const uploadPdf = async (formData) => {
+export const submitPdfPages = async (pdfData, pages) => {
   try {
-    const response = await axios.post(`${API_URL}/upload`, formData, {
+    const formData = new FormData();
+    formData.append('pdfData', pdfData);
+    formData.append('pages', pages.join(','));
+    const response = await axios.post(`${API_URL}/submit-pdf`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
-      }
+        'Content-Type': 'multipart/form-data',
+      },
     });
     return response.data;
   } catch (error) {
@@ -16,4 +18,20 @@ const uploadPdf = async (formData) => {
   }
 };
 
-export { uploadPdf };
+export const postSelectedPages = async (pdfFile, selectedPages) => {
+  try {
+    const formData = new FormData();
+    formData.append('pdf', pdfFile, pdfFile.name);
+    formData.append('selectedPages', JSON.stringify(selectedPages));
+
+    const response = await axios.post(`${API_URL}/selected-pages`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
