@@ -22,20 +22,20 @@ const PdfSelector = ({ pdfFile }) => {
       {pdfFile ? (
         <div>
           <Document file={pdfFile} onLoadSuccess={handleDocumentLoadSuccess}>
-            <Page renderTextLayer={false} pageNumber={pageNumber} />
+            <Page renderTextLayer={true} pageNumber={pageNumber} />
           </Document>
           <p>
-            Page {pageNumber} of {numPages}
+            Seite {pageNumber} of {numPages}
           </p>
           <button disabled={pageNumber <= 1} onClick={() => handlePageChange(pageNumber - 1)}>
-            Previous
+            Vorherige
           </button>
           <button disabled={pageNumber >= numPages} onClick={() => handlePageChange(pageNumber + 1)}>
-            Next
+            Nächste
           </button>
         </div>
       ) : (
-        <p>No PDF file selected</p>
+        <p>Keine PDF Datei hochgeladen</p>
       )}
     </div>
   );

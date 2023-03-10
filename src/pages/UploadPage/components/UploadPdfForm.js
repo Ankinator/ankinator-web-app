@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Form, Button } from "react-bootstrap";
 
 const UploadPdfForm = ({ onPdfSelect }) => {
   const [pdfFile, setPdfFile] = useState(null);
@@ -10,9 +11,14 @@ const UploadPdfForm = ({ onPdfSelect }) => {
   };
 
   return (
-    <div>
-      <input type="file" accept="application/pdf" onChange={handlePdfSelect} />
-    </div>
+    <div className="UploadPdfForm">
+    <h2>Skript hochladen (PDF)</h2>
+    <Form>
+      <Form.Group controlId="formFile">
+        <Form.Control type="file" accept="application/pdf" onChange={handlePdfSelect} />
+      </Form.Group>
+    </Form>
+  </div>
   );
 };
 
