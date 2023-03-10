@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Ankinator",
+  "name": "Ankinator - easy slide deck generator",
   "icons": [
     {
       "src": "favicon.ico",
