@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './UploadPage.css';
+import Header from './components/Header';
 import UploadPdfForm from './components/UploadPdfForm';
 import PdfSelector from './components/PdfSelector';
 import { bgColors } from '../../App';
@@ -14,7 +15,7 @@ const UploadPage = () => {
 
   return (
     <Container style={{maxWidth: "100%", padding: 0, height: "100%", backgroundColor: bgColors.Hint}}>
-      <h1>PDF Viewer App</h1>
+      <Header></Header>
       <UploadPdfForm onPdfSelect={handlePdfSelect} />
       <PdfSelector pdfFile={pdfFile} />
     </Container>
