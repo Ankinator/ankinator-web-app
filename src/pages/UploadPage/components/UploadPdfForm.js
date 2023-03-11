@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
-import { Container } from 'react-bootstrap';
+import React, { useState, useRef } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import { Form, Button } from "react-bootstrap";
 import './UploadPdfForm.css';
 
 const UploadPdfForm = ({ onPdfSelect }) => {
   const [pdfFile, setPdfFile] = useState(null);
   const [selectedName, setSelectedName] = useState("")
+  const fileInputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
 
   const handlePdfSelect = (event) => {
     const selectedFile = event.target.files[0];
@@ -15,13 +20,20 @@ const UploadPdfForm = ({ onPdfSelect }) => {
   };
 
   return (
-    <div className="app">
-      <div className="file-upload">
-        <h3>Upload script</h3>
-        <input type="file" onChange={handlePdfSelect} />
-      </div>
-      <p style={{marginTop: -20, textAlign: "center"}}>{selectedName ||"No file selected"}</p>
-    </div>
+    <Container className="app" style={{margin: 'auto', marginTop: '10px'}}>
+      <Row className="file-upload">
+        <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+          <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handlePdfSelect} />
+          <Button type="button" onClick={handleButtonClick}>Upload script</Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <p style={{ textAlign: "center" }}>{selectedName || "No file selected"}</p>
+        </Col>
+      </Row>
+    </Container>
+
   );
 };
 

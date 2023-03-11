@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Document, Page, pdfjs } from 'react-pdf';
 import "react-pdf/dist/esm/Page/TextLayer.css";
 
@@ -20,22 +21,19 @@ const PdfSelector = ({ pdfFile }) => {
   return (
     <div>
       {pdfFile ? (
-        <div>
-          <Document file={pdfFile} onLoadSuccess={handleDocumentLoadSuccess}>
-            <Page renderTextLayer={true} pageNumber={pageNumber} />
-          </Document>
-          <p>
-            Seite {pageNumber} of {numPages}
-          </p>
-          <button disabled={pageNumber <= 1} onClick={() => handlePageChange(pageNumber - 1)}>
-            Vorherige
-          </button>
-          <button disabled={pageNumber >= numPages} onClick={() => handlePageChange(pageNumber + 1)}>
-            Nächste
-          </button>
-        </div>
+        <Container>
+        <Row>
+          <Col>1 of 2</Col>
+          <Col>2 of 2</Col>
+        </Row>
+        <Row>
+          <Col>1 of 3</Col>
+          <Col>2 of 3</Col>
+          <Col>3 of 3</Col>
+        </Row>
+      </Container>
       ) : (
-        <p>Keine PDF Datei hochgeladen</p>
+        <p></p>
       )}
     </div>
   );
