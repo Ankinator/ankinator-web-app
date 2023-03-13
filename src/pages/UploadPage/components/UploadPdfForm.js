@@ -1,22 +1,27 @@
 import React, { useState, useRef } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Form, Button } from "react-bootstrap";
+import { Document, Page, pdfjs } from 'react-pdf';
 import './UploadPdfForm.css';
 
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+
 const UploadPdfForm = ({ onPdfSelect }) => {
-  const [pdfFile, setPdfFile] = useState(null);
   const [selectedName, setSelectedName] = useState("")
   const fileInputRef = useRef(null);
 
-  const handleButtonClick = () => {
+  function handleButtonClick () {
     fileInputRef.current.click();
   };
 
   const handlePdfSelect = (event) => {
-    const selectedFile = event.target.files[0];
-    setPdfFile(selectedFile);
-    onPdfSelect(selectedFile);
-    setSelectedName(selectedFile.name);
+    const file = event.target.files[0];
+    //Update Text: No file selected -> filename
+    setSelectedName(file.name);
+    //Transfer pdf to PdfGallery.js
+    onPdfSelect(file);
+    
   };
 
   return (
