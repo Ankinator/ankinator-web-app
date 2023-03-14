@@ -25,7 +25,7 @@ const UploadPdfForm = ({ onPdfSelect }) => {
   };
 
   return (
-    <Container className="app" style={{margin: 'auto', marginTop: '10px'}}>
+    <Container fluid className="p-0" style={{margin: 'auto', marginTop: '10px'}}>
       <Row className="file-upload">
         <Col style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handlePdfSelect} />
