@@ -1,41 +1,55 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Document, Page, pdfjs } from 'react-pdf';
-import "react-pdf/dist/esm/Page/TextLayer.css";
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import React from 'react';
+import { Container} from 'react-bootstrap';
+//import PdfGallery from './PdfGallery';
+import PdfSingle from './PdfSingle';
 
 const PdfSelector = ({ pdfFile }) => {
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-
-  const handleDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
-    setPageNumber(1);
-  };
-
-  const handlePageChange = (newPageNumber) => {
-    setPageNumber(newPageNumber);
-  };
+  //const [selectedOption, setSelectedOption] = useState('gallery'); // Set the default selected option
+  //const handleSelect = (eventKey) => setSelectedOption(eventKey);
 
   return (
-    <div>
+    <Container fluid className="p-0">
       {pdfFile ? (
-        <Container>
-        <Row>
-          <Col>1 of 2</Col>
-          <Col>2 of 2</Col>
-        </Row>
-        <Row>
-          <Col>1 of 3</Col>
-          <Col>2 of 3</Col>
-          <Col>3 of 3</Col>
-        </Row>
-      </Container>
+        <PdfSingle pdfFile={pdfFile} />
       ) : (
-        <p></p>
+        <h3 style={{justifyContent: 'center', textAlign: 'center'}}>Welcome to Ankinator, a smart generator for anki flash cards. Please upload your script, select the pages for which you want to generate cards and press submit.</h3>
       )}
-    </div>
+    </Container>
+
+    // <div>
+    //   {pdfFile ? (
+    //     <Container fluid className="p-0">
+    //       <Row>
+    //         <Col></Col>
+    //         <Col style={{ textAlign: 'center' }}><h4>Select pages for slide generation</h4></Col>
+    //         <Col>
+    //           <Row>
+    //             <Col style={{ textAlign: 'end' }}><Button>Select all pages</Button></Col>
+    //             <Col>
+    //               <DropdownButton id="dropdown-basic-button" title={selectedOption === 'gallery' ? 'Gallery View' : 'Single View'} onSelect={handleSelect}>
+    //                 <Dropdown.Item eventKey="gallery">Gallery View</Dropdown.Item>
+    //                 <Dropdown.Item eventKey="single">Single View</Dropdown.Item>
+    //               </DropdownButton>
+    //             </Col>
+    //           </Row>
+    //         </Col>
+    //       </Row>
+    //       <Row>
+    //         {selectedOption === 'gallery' ? (
+    //           <Col>
+    //             Gallery
+    //           </Col>
+    //         ) : (
+    //           <Col>
+    //             <PdfSingle pdfFile={pdfFile}/>
+    //           </Col>
+    //         )}
+    //       </Row>
+    //     </Container>
+    //   ) : (
+    //     <p></p>
+    //   )}
+    // </div>
   );
 };
 
