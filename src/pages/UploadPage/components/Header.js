@@ -17,7 +17,7 @@ function Header() {
                     Ankinator
                 </Navbar.Brand>
                 <Nav className="ms-auto">
-                    <Button style={{ backgroundColor: 'transparent', borderColor: "transparent" }} onClick="test"><img alt="" src={Profil} style={{ marginRight: 5, marginLeft: 10 }} className="d-inline-block align-top" /></Button>
+                    <Button style={{ backgroundColor: 'transparent', borderColor: "transparent" }}><img alt="" src={Profil} style={{ marginRight: 5, marginLeft: 10 }} className="d-inline-block align-top" /></Button>
                 </Nav>
             </Container>
         </Navbar>
