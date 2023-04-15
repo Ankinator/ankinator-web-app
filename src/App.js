@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 //import { login } from './Services/APIServices';
 import UploadPage from './pages/UploadPage/UploadPage';
+import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
 
 
 export const bgColors = {
@@ -23,6 +24,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<UploadPage />} />
+        <Route path="/evaluation" element={<EvaluationPage />} />
       </Routes>
     </BrowserRouter>
   );
