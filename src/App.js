@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
 import './App.css';
 //import { login } from './Services/APIServices';
 import UploadPage from './pages/UploadPage/UploadPage';
@@ -21,12 +22,10 @@ function App() {
   //login();
 
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/" element={<UploadPage />} />
         <Route path="/evaluation" element={<EvaluationPage />} />
       </Routes>
-    </BrowserRouter>
   );
 }
 

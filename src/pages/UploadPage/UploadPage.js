@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './UploadPage.css';
 import Header from './components/Header';
 import UploadPdfForm from './components/UploadPdfForm';
-import PdfSelector from './components/PdfSelector';
+import PdfSelector from './components/PdfSelector/PdfSelector';
 import { bgColors } from '../../App';
 import { Container } from 'react-bootstrap';
 

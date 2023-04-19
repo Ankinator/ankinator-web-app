@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import { bgColors } from '../../../App';
-import useNavToEv from '../../../hooks/useNavToEv';
+
 
 const Popup = ({ show, handleClose, handleGenerateCards }) => {
   const [subject, setSubject] = useState('');
   const [domain, setDomain] = useState('');
-  const { navToEvaluationPage } = useNavToEv();
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
     handleGenerateCards(subject, domain);
-    handleClose();
-    navToEvaluationPage();
   }
 
   return (

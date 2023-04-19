@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'
 import { Button, Container, Row, Col, Form } from 'react-bootstrap';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-import { postSelectedPages } from '../../../api/api';
-import Popup from './Popup';
+import { postSelectedPages } from '../../../../api/api';
+import Popup from '../Popup';
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 
 const PdfSingle = ({ pdfFile }) => {
@@ -12,6 +13,7 @@ const PdfSingle = ({ pdfFile }) => {
     const [position, setPosition] = useState(0);
     const pageRef = useRef(null);
     const [showPopup, setShowPopup] = useState(false);
+    const navigate = useNavigate();
 
     const onDocumentLoadSuccess = ({ numPages }) => {
         setNumPages(numPages);
@@ -71,8 +73,11 @@ const PdfSingle = ({ pdfFile }) => {
         });
     };
 
-    const handleGenerateCards = (subject, domain) => {
-        postSelectedPages(pdfFile, selectedPages);
+    const handleGenerateCards = async (subject, domain) => {
+        var formData = await postSelectedPages(pdfFile, selectedPages);
+        setShowPopup(false);
+        //navToEvaluationPage(formData.get("pdf"),"testtext");
+        navigate('/evaluation', {state: {test:"test"}});
     };
 
     const isPageSelected = selectedPages.selected.includes(pageNumber);

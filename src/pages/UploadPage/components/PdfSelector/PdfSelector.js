@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container} from 'react-bootstrap';
-//import PdfGallery from './PdfGallery';
 import PdfSingle from './PdfSingle';
 
 const PdfSelector = ({ pdfFile }) => {
