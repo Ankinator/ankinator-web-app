@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import React, { useState } from 'react';
 import './App.css';
-//import { login } from './Services/APIServices';
+import { sessionLogin } from './api/api';
 import UploadPage from './pages/UploadPage/UploadPage';
 import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
 
@@ -19,7 +19,7 @@ export const bgColors = {
 
 function App() {
 
-  //login();
+  sessionLogin();
 
   return (
       <Routes>
