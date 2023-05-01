@@ -4,18 +4,22 @@ import Cookie from 'universal-cookie';
 const API_URL = 'http://localhost';
 
 export const sessionLogin = async () => {
-  try {
-    const response = await axios.post(`${API_URL}/session`, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    var result = await response.data;
-    var cookieAcc = new Cookie();
-    cookieAcc.set('access_token', result.access_token, { path: '/' });
-    return await response.data;
-  } catch (error) {
-    console.error(error);
+  var cookieAcc = new Cookie();
+  if (cookieAcc.get("access_token") === undefined) {
+    try {
+      const response = await axios.post(`${API_URL}/session`, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      var result = await response.data;
+      cookieAcc.set('access_token', result.access_token, { path: '/' });
+      return await response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    return;
   }
 };
 
@@ -27,11 +31,12 @@ export const postSelectedPages = async (pdfFile, selectedPages, subject, domain)
     /*formData.append('selectedPages', JSON.stringify(selectedPages));
     formData.append('subject', subject);
     formData.append('domain', domain);*/
-    const response = await axios.post(`${API_URL}/uploadpdf`, formData, {
+    const response = await axios.post(`${API_URL}/uploadpdf`, {
       headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': 'Bearer ' + cookie.get('access_token')
-      }
+      },
+      body: formData
     });
     
     return await response.data;
