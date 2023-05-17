@@ -27,14 +27,12 @@ export const sessionLogin = async () => {
 
 export const postSelectedPages = async (pdfFile, selectedPages, subject, domain) => {
   var cookie = new Cookie();
-  try {
-    var test = [];
-    
+  try {   
     const formData = new FormData();
     formData.append('file', pdfFile);
     formData.append('pages', selectedPages);
-    formData.append('models', test);
-    formData.append('domain', "domain");
+    formData.append('models', "test");
+    formData.append('domain', domain);
     const response = await axios.post(`${API_URL}/uploadpdf`,formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
