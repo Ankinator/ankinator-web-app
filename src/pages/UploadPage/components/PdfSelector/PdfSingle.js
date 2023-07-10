@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Button, Container, Row, Col, Form } from 'react-bootstrap';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
@@ -16,8 +16,21 @@ const PdfSingle = ({ pdfFile }) => {
     const navigate = useNavigate();
 
     const onDocumentLoadSuccess = ({ numPages }) => {
+        resetStates();
         setNumPages(numPages);
     };
+
+    const resetStates = () => {
+        setNumPages(null);
+        setPageNumber(1);
+        setSelectedPages({ selected: [] });
+        setPosition(0);
+        setShowPopup(false);
+      };
+
+    useEffect(() => {
+        enableSubmit();
+    }, [selectedPages]);
 
     const goToPrevPage = () => {
         setPosition(pageRef.current.scrollTop);
@@ -73,11 +86,18 @@ const PdfSingle = ({ pdfFile }) => {
         });
     };
 
+    const enableSubmit = () => {
+        const submitButton = document.getElementById('submitButton');
+        if (submitButton && selectedPages) {
+            submitButton.disabled = selectedPages.selected.length === 0;
+        }
+    };
+
     const handleGenerateCards = async (domain, model) => {
         var formData = await postSelectedPages(pdfFile, selectedPages);
         setShowPopup(false);
         console.log(formData);
-        navigate('/evaluation', {state: {formData: "test"}});
+        navigate('/evaluation', { state: { formData: "test" } });
     };
 
     const isPageSelected = selectedPages.selected.includes(pageNumber);
@@ -86,7 +106,7 @@ const PdfSingle = ({ pdfFile }) => {
         <Container fluid className="p-0">
             <Row>
                 <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
-                    <Button onClick={() => setShowPopup(true)} style={{ marginLeft: '10px', background: 'red', border: 'red' }}>Submit</Button>
+                    <Button id='submitButton' onClick={() => setShowPopup(true)} style={{ marginLeft: '10px', background: 'red', border: 'red' }}>Submit</Button>
                     <Popup show={showPopup} handleClose={() => setShowPopup(false)} handleGenerateCards={handleGenerateCards} />
                 </Col>
                 <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
