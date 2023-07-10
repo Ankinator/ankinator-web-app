@@ -73,7 +73,7 @@ const PdfSingle = ({ pdfFile }) => {
         });
     };
 
-    const handleGenerateCards = async (subject, domain) => {
+    const handleGenerateCards = async (domain, model) => {
         var formData = await postSelectedPages(pdfFile, selectedPages);
         setShowPopup(false);
         console.log(formData);
