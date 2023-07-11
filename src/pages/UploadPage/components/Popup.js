@@ -34,7 +34,7 @@ const Popup = ({ show, handleClose, handleGenerateCards }) => {
   };
 
   const controlButton = () => {
-    const submitButton = document.getElementById('submitButton');
+    const submitButton = document.getElementById('submitButtonPopup');
     if (submitButton) {
       submitButton.disabled = !(domain && model.length > 0);
     }
@@ -68,7 +68,7 @@ const Popup = ({ show, handleClose, handleGenerateCards }) => {
               styles={customStyles}
             />
           </Form.Group>
-          <Button id="submitButton" variant="primary" type="submit" disabled={!domain || model.length === 0} style={{ marginTop: '15px' }}>
+          <Button id="submitButtonPopup" variant="primary" type="submit" disabled={!domain || model.length === 0} style={{ marginTop: '15px' }}>
             Generate Cards
           </Button>
         </Form>
