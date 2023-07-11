@@ -94,10 +94,9 @@ const PdfSingle = ({ pdfFile }) => {
     };
 
     const handleGenerateCards = async (domain, model) => {
-        var formData = await postSelectedPages(pdfFile, selectedPages, domain, model);
+        var documentId = await postSelectedPages(pdfFile, selectedPages, domain, model);
         setShowPopup(false);
-        console.log(formData);
-        navigate('/evaluation', { state: { formData: "test" } });
+        navigate('/evaluation', { state: { documentId: documentId.document_id, pdfFile: pdfFile } });
     };
 
     const isPageSelected = selectedPages.selected.includes(pageNumber);
