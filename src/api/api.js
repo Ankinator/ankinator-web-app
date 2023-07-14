@@ -25,28 +25,6 @@ export const sessionLogin = async () => {
   }
 };
 
-export const postSelectedPages = async (pdfFile, selectedPages, domain, model) => {
-  var cookie = new Cookie();
-  const modelArray = model.map((option) => option.value);
-  try {
-    const formData = new FormData();
-    formData.append('file', pdfFile, pdfFile.name);
-    formData.append('pages', selectedPages.selected);
-    formData.append('models', modelArray);
-    formData.append('domain', domain);
-    const response = await axios.post(`${API_URL}/uploadpdf`,formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        'Authorization': 'Bearer ' + cookie.get('access_token')
-      }
-    });
-    
-    return await response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 export const getUser = async () => {
   var cookie = new Cookie();
   try {
@@ -71,5 +49,41 @@ export const getUser = async () => {
     } catch (error) {
       console.error(error);
     }
+  }
+};
+
+export const postSelectedPages = async (pdfFile, selectedPages, domain, model) => {
+  var cookie = new Cookie();
+  try {
+    const formData = new FormData();
+    formData.append('file', pdfFile, pdfFile.name);
+    formData.append('pages', selectedPages.selected);
+    formData.append('models', model);
+    formData.append('domain', domain);
+    const response = await axios.post(`${API_URL}/uploadpdf`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getResults = async (documentId) => {
+  const cookie = new Cookie();
+  try {
+    const response = await axios.get(`${API_URL}/result?document_id=${documentId}`, {
+      headers: {
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
   }
 };

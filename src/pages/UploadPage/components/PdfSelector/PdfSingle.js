@@ -26,7 +26,7 @@ const PdfSingle = ({ pdfFile }) => {
         setSelectedPages({ selected: [] });
         setPosition(0);
         setShowPopup(false);
-      };
+    };
 
     useEffect(() => {
         enableSubmit();
@@ -93,50 +93,62 @@ const PdfSingle = ({ pdfFile }) => {
         }
     };
 
-    const handleGenerateCards = async (domain, model) => {
-        var documentId = await postSelectedPages(pdfFile, selectedPages, domain, model);
+    const handleGenerateCards = async (domain, models) => {
+        const documentIds = [];
+        if (models.length > 1) {
+          await Promise.all(
+            models.map(async (model) => {
+              const id = await postSelectedPages(pdfFile, selectedPages, domain, model.value);
+              documentIds.push(id.document_id);
+            })
+          );
+        } else {
+          const id = await postSelectedPages(pdfFile, selectedPages, domain, models[0].value);
+          documentIds.push(id.document_id);
+        }
+      
         setShowPopup(false);
-        navigate('/evaluation', { state: { documentId: documentId.document_id, pdfFile: pdfFile } });
-    };
+        navigate('/evaluation', { state: { documentIds, pdfFile } });
+      };
 
     const isPageSelected = selectedPages.selected.includes(pageNumber);
 
-    return (
-        <Container fluid className="p-0">
-            <Row>
-                <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
-                    <Button id='submitButton' onClick={() => setShowPopup(true)} style={{ marginLeft: '10px', background: 'red', border: 'red' }}>Submit</Button>
-                    <Popup show={showPopup} handleClose={() => setShowPopup(false)} handleGenerateCards={handleGenerateCards} />
-                </Col>
-                <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Button onClick={goToPrevPage} style={{ marginRight: '10px' }}>Prev</Button>
-                    <h6 style={{ margin: 0 }}>Page {pageNumber} of {numPages}</h6>
-                    <Button onClick={goToNextPage} style={{ marginLeft: '10px' }}>Next</Button>
-                </Col>
-                <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
-                    <Form.Check
-                        type="checkbox"
-                        style={{ marginRight: '10px' }}
-                        checked={isPageSelected}
-                        onChange={handlePageSelect}
-                        label={`Select page ${pageNumber}`}
+return (
+    <Container fluid className="p-0">
+        <Row>
+            <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+                <Button id='submitButton' onClick={() => setShowPopup(true)} style={{ marginLeft: '10px', background: 'red', border: 'red' }}>Submit</Button>
+                <Popup show={showPopup} handleClose={() => setShowPopup(false)} handleGenerateCards={handleGenerateCards} />
+            </Col>
+            <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Button onClick={goToPrevPage} style={{ marginRight: '10px' }}>Prev</Button>
+                <h6 style={{ margin: 0 }}>Page {pageNumber} of {numPages}</h6>
+                <Button onClick={goToNextPage} style={{ marginLeft: '10px' }}>Next</Button>
+            </Col>
+            <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+                <Form.Check
+                    type="checkbox"
+                    style={{ marginRight: '10px' }}
+                    checked={isPageSelected}
+                    onChange={handlePageSelect}
+                    label={`Select page ${pageNumber}`}
+                />
+                <Button style={{ marginRight: '10px' }} onClick={handleSelectAllPages}>Select all</Button>
+                <Button style={{ marginRight: '10px' }} onClick={handleDeselectAllPages}>Deselect all</Button>
+            </Col>
+        </Row>
+        <Row ref={pageRef} style={{ height: '80vh', overflow: 'hidden', marginTop: '10px' }}>
+            <Col style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
+                <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
+                    <Page pageNumber={pageNumber} renderTextLayer={false} onLoadSuccess={() => {
+                        pageRef.current.scrollTo({ top: position });
+                    }}
                     />
-                    <Button style={{ marginRight: '10px' }} onClick={handleSelectAllPages}>Select all</Button>
-                    <Button style={{ marginRight: '10px' }} onClick={handleDeselectAllPages}>Deselect all</Button>
-                </Col>
-            </Row>
-            <Row ref={pageRef} style={{ height: '80vh', overflow: 'hidden', marginTop: '10px' }}>
-                <Col style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
-                    <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
-                        <Page pageNumber={pageNumber} renderTextLayer={false} onLoadSuccess={() => {
-                            pageRef.current.scrollTo({ top: position });
-                        }}
-                        />
-                    </Document>
-                </Col>
-            </Row>
-        </Container>
-    );
+                </Document>
+            </Col>
+        </Row>
+    </Container>
+);
 };
 
 export default PdfSingle;
