@@ -87,3 +87,18 @@ export const getResults = async (documentId) => {
     console.error(error);
   }
 };
+
+export const getResultPdf = async (documentId) => {
+  const cookie = new Cookie();
+  try {
+    const response = await axios.get(`${API_URL}/resultpdf?document_id=${documentId}`, {
+      headers: {
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
