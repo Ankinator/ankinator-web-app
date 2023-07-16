@@ -36,8 +36,8 @@ const EvaluationPage = () => {
         <Container style={{ maxWidth: "100%", padding: 0, height: "100%", backgroundColor: bgColors.Hint }}>
             {loading ? (
                 <div className="overlay">
+                    <p className="overlay-text" style={{marginTop: 15, marginRight: 10}}>Generating Questions, please wait</p>
                     <Spinner animation="border" variant="primary" />
-                    <p className="overlay-text">Generating Questions, please wait</p>
                 </div>
             ) : (
                 <>
