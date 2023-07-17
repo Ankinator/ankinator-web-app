@@ -1,99 +1,103 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import { Document, Page } from 'react-pdf';
+import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-const EvaluationComp = ({ documentId, pdfFile}) => {
-  console.log(documentId, " + " , pdfFile);
-  /*
-  const [numPages, setNumPages] = useState(null);
+const EvaluationComp = ({ pdfFile, questions }) => {
   const [pageNumber, setPageNumber] = useState(1);
-  const [slidePageNumbers, setSlidePageNumbers] = useState([]);
+  const totalPages = pdfFile ? pdfFile.numPages : 0;
+  const [acceptedQuestions, setAcceptedQuestions] = useState([]);
+  const [pdfData, setPdfData] = useState(null); // State zum Speichern der dekodierten PDF-Daten
 
   useEffect(() => {
-    setNumPages(null);
+    setAcceptedQuestions([]);
     setPageNumber(1);
-    setSlidePageNumbers(Array(slidePdfs.length).fill(1));
-  }, [pdfFile, slidePdfs]);
+  }, [questions]);
 
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
+  useEffect(() => {
+    // Funktion zum Dekodieren der base64-kodierten Daten
+    const decodeBase64 = (base64String) => {
+      const decodedString = atob(base64String);
+      const bytes = new Uint8Array(decodedString.length);
+      for (let i = 0; i < decodedString.length; i++) {
+        bytes[i] = decodedString.charCodeAt(i);
+      }
+      return bytes;
+    };
 
-  function goToNextPage() {
-    if (pageNumber < numPages) {
-      setPageNumber(pageNumber + 1);
-      setSlidePageNumbers(slidePageNumbers.map((page) => page + 1));
-    }
-  }
+    // Base64-dekodierte Daten in ein Blob-Objekt umwandeln
+    const byteData = decodeBase64(pdfFile);
+    const blob = new Blob([byteData], { type: 'application/pdf' });
 
-  function goToPrevPage() {
+    // Blob-Objekt in eine URL umwandeln und im State speichern
+    setPdfData(URL.createObjectURL(blob));
+  }, [pdfFile]);
+
+  const handlePrevPage = () => {
     if (pageNumber > 1) {
       setPageNumber(pageNumber - 1);
-      setSlidePageNumbers(slidePageNumbers.map((page) => page - 1));
     }
-  }
+  };
 
-  if (!pdfFile) {
-    return null;
-  }
+  const handleNextPage = () => {
+    if (pageNumber < totalPages) {
+      setPageNumber(pageNumber + 1);
+    }
+  };
+
+  const handleQuestionAccept = (question) => {
+    setAcceptedQuestions((prevAccepted) => [...prevAccepted, question]);
+    handleNextPage();
+  };
 
   return (
     <Container fluid className="p-0">
-      <Container fluid>
-        <Row className="mx-0">
-          <Col md={6} className="p-0">
-            <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
-              <Page pageNumber={pageNumber} />
-            </Document>
-            <div className="page-navigation">
-              <button onClick={goToPrevPage}>Prev</button>
-              <span>{pageNumber} of {numPages}</span>
-              <button onClick={goToNextPage}>Next</button>
+      <Row className="mb-3">
+        <Col>
+          <Button onClick={handlePrevPage} disabled={pageNumber === 1}>Prev</Button>
+          <span className="mx-2">{pageNumber} of {totalPages}</span>
+          <Button onClick={handleNextPage} disabled={pageNumber === totalPages}>Next</Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          {pdfData && (
+            <div>
+              <h4>Page {pageNumber}</h4>
+              <Document
+                file={pdfData} // Hier verwenden wir die erstellte URL mit den dekodierten Daten
+                onLoadSuccess={({ numPages }) => console.log(`Number of pages: ${numPages}`)}
+              >
+                <Page pageNumber={pageNumber} width={600} renderTextLayer={true}/>
+              </Document>
             </div>
-          </Col>
-          <Col md={6}>
-            {slidePdfs.map((slidePdf, index) => (
-              <div key={index}>
-                <h3>Slide PDF {index + 1}</h3>
-                <Document file={slidePdf} onLoadSuccess={({ numPages }) => setSlidePageNumbers((prevPageNumbers) => {
-                  const updatedPageNumbers = [...prevPageNumbers];
-                  if (numPages > 0) {
-                    updatedPageNumbers[index] = Math.min(updatedPageNumbers[index], numPages);
-                  }
-                  return updatedPageNumbers;
-                })}>
-                  <Page pageNumber={slidePageNumbers[index]} />
-                </Document>
-                <div className="page-navigation">
-                  <button
-                    disabled={slidePageNumbers[index] <= 1}
-                    onClick={() => setSlidePageNumbers((prevPageNumbers) => {
-                      const updatedPageNumbers = [...prevPageNumbers];
-                      updatedPageNumbers[index] = updatedPageNumbers[index] - 1;
-                      return updatedPageNumbers;
-                    })}
+          )}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <h4>Questions</h4>
+          {questions.map((model, index) => (
+            <div key={index} className="mb-3">
+              <h5>{model.model_name}</h5>
+              {model.model_result[pageNumber - 1]?.map((question, qIndex) => (
+                <div key={qIndex}>
+                  <p>{question}</p>
+                  <Button
+                    variant="success"
+                    className="rounded-circle"
+                    onClick={() => handleQuestionAccept(question)}
                   >
-                    Prev
-                  </button>
-                  <span>{slidePageNumbers[index]} of {numPages}</span>
-                  <button
-                    disabled={slidePageNumbers[index] >= numPages}
-                    onClick={() => setSlidePageNumbers((prevPageNumbers) => {
-                      const updatedPageNumbers = [...prevPageNumbers];
-                      updatedPageNumbers[index] = updatedPageNumbers[index] + 1;
-                      return updatedPageNumbers;
-                    })}
-                  >
-                    Next
-                  </button>
+                    ✓
+                  </Button>
                 </div>
-              </div>
-            ))}
-          </Col>
-        </Row>
-      </Container>
+              ))}
+            </div>
+          ))}
+        </Col>
+      </Row>
     </Container>
-  );*/
+  );
 };
 
 export default EvaluationComp;

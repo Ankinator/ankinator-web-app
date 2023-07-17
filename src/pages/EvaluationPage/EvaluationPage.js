@@ -20,8 +20,8 @@ const EvaluationPage = () => {
             try {
                 const loadedPdf = await getResultPdf(documentIds[0]);
                 if (loadedPdf.model_result === "PENDING") {
-                    await new Promise(resolve => setTimeout(resolve, 2500)); // Kurze Wartezeit von 2,5 Sekunden
-                    await loadPdf(); // Wenn die PDF-Datei noch im PENDING-Status ist, erneut abrufen
+                    await new Promise((resolve) => setTimeout(resolve, 2500));
+                    await loadPdf();
                 } else {
                     setPdfFile(loadedPdf);
                 }
@@ -40,13 +40,13 @@ const EvaluationPage = () => {
             if (allNotPending) {
                 setResults(loadedResults);
             } else {
-                await new Promise(resolve => setTimeout(resolve, 2500)); // Kurze Wartezeit von 2,5 Sekunden
-                await loadResults(); // Wenn noch Ergebnisse im PENDING-Status sind, erneut abrufen
+                await new Promise(resolve => setTimeout(resolve, 2500));
+                await loadResults();
             }
         };
 
         await Promise.all([loadPdf(), loadResults()]);
-        setLoading(false); // Sobald beide Funktionen abgeschlossen sind, setLoading(false) aufrufen
+        setLoading(false);
     };
 
     useEffect(() => {

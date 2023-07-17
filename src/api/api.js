@@ -58,7 +58,7 @@ export const postSelectedPages = async (pdfFile, selectedPages, domain, model) =
     const formData = new FormData();
     formData.append('file', pdfFile, pdfFile.name);
     formData.append('pages', selectedPages.selected);
-    formData.append('models', model);
+    formData.append('model', model);
     formData.append('domain', domain);
     const response = await axios.post(`${API_URL}/uploadpdf`, formData, {
       headers: {
@@ -96,7 +96,6 @@ export const getResultPdf = async (documentId) => {
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
     });
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.error(error);
