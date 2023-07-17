@@ -5,7 +5,7 @@ import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 const EvaluationComp = ({ pdfFile, questions }) => {
   const [pageNumber, setPageNumber] = useState(1);
-  const totalPages = pdfFile ? pdfFile.numPages : 0;
+  const [totalPages, setTotalPages] = useState();
   const [acceptedQuestions, setAcceptedQuestions] = useState([]);
   const [pdfData, setPdfData] = useState(null); // State zum Speichern der dekodierten PDF-Daten
 
@@ -45,6 +45,11 @@ const EvaluationComp = ({ pdfFile, questions }) => {
     }
   };
 
+  const handleLoadSuccess = ({ numPages }) => {
+    setTotalPages(numPages);
+    console.log(`Number of pages: ${numPages}`);
+  };
+
   const handleQuestionAccept = (question) => {
     setAcceptedQuestions((prevAccepted) => [...prevAccepted, question]);
     handleNextPage();
@@ -52,48 +57,52 @@ const EvaluationComp = ({ pdfFile, questions }) => {
 
   return (
     <Container fluid className="p-0">
-      <Row className="mb-3">
-        <Col>
+      <Row className="mb-3" style={{ marginTop: '10px' }}>
+        <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+        </Col>
+        <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Button onClick={handlePrevPage} disabled={pageNumber === 1}>Prev</Button>
-          <span className="mx-2">{pageNumber} of {totalPages}</span>
+          <span className="mx-2">Page {pageNumber} of {totalPages}</span>
           <Button onClick={handleNextPage} disabled={pageNumber === totalPages}>Next</Button>
         </Col>
+        <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+        </Col>
       </Row>
-      <Row>
-        <Col>
+      <Row >
+        <Col style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
           {pdfData && (
             <div>
-              <h4>Page {pageNumber}</h4>
               <Document
-                file={pdfData} // Hier verwenden wir die erstellte URL mit den dekodierten Daten
-                onLoadSuccess={({ numPages }) => console.log(`Number of pages: ${numPages}`)}
+                file={pdfData}
+                onLoadSuccess={handleLoadSuccess}
               >
-                <Page pageNumber={pageNumber} width={600} renderTextLayer={true}/>
+                <Page pageNumber={pageNumber} width={800} renderTextLayer={true} />
               </Document>
             </div>
           )}
         </Col>
       </Row>
       <Row>
-        <Col>
-          <h4>Questions</h4>
+        <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+        </Col>
+        <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           {questions.map((model, index) => (
             <div key={index} className="mb-3">
-              <h5>{model.model_name}</h5>
-              {model.model_result[pageNumber - 1]?.map((question, qIndex) => (
-                <div key={qIndex}>
-                  <p>{question}</p>
-                  <Button
-                    variant="success"
-                    className="rounded-circle"
-                    onClick={() => handleQuestionAccept(question)}
-                  >
-                    ✓
-                  </Button>
-                </div>
-              ))}
+              <h5>Model: {model.model_name}</h5>
+              <div className="d-flex justify-content-between align-items-center">
+                <p>{model.model_result[pageNumber - 1][1]}</p>
+                <Button
+                  variant="success"
+                  className="rounded-circle"
+                  onClick={() => handleQuestionAccept(model.model_result[pageNumber - 1][1])}
+                >
+                  ✓
+                </Button>
+              </div>
             </div>
           ))}
+        </Col>
+        <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
         </Col>
       </Row>
     </Container>
