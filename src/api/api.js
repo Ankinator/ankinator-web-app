@@ -56,7 +56,7 @@ export const postSelectedPages = async (pdfFile, selectedPages, domain, model) =
   var cookie = new Cookie();
   try {
     const formData = new FormData();
-    if (selectedPages.selected.length != 0) {
+    if (selectedPages.selected.length !== 0) {
       formData.append('pages', selectedPages.selected);
     }
     formData.append('file', pdfFile, pdfFile.name);
