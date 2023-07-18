@@ -14,7 +14,7 @@ const UploadPage = () => {
   };
 
   return (
-    <Container style={{maxWidth: "100%", padding: 0, height: "100%", color: "white"}}>
+    <Container style={{maxWidth: "100%", padding: 0, height: "100%", color: "white", backgroundImage: `url("/src/assets/images/background_image.jpg")`}}>
       <Header></Header>
       <UploadPdfForm onPdfSelect={handlePdfSelect} />
       <PdfSelector pdfFile={pdfFile} />

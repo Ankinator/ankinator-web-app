@@ -28,9 +28,9 @@ const PdfSingle = ({ pdfFile }) => {
         setShowPopup(false);
     };
 
-    useEffect(() => {
+    /*useEffect(() => {
         enableSubmit();
-    }, [selectedPages]);
+    }, [selectedPages]);*/
 
     const goToPrevPage = () => {
         setPosition(pageRef.current.scrollTop);
