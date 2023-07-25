@@ -83,27 +83,28 @@ const EvaluationComp = ({ pdfFile, questions }) => {
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         </Col>
-        <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-        {questions.map((model, index) => (
-          <div key={index} className="mb-3">
-            <h5>Model: {model.model_name}</h5>
-            <div className="d-flex justify-content-between align-items-center">
-              <p>{model.model_result[pageNumber - 1][1]}</p>
-              <Button
-                variant="success"
-                className="rounded-circle"
-                style={{ marginBottom: 'auto'}}
-                onClick={() => handleQuestionAccept(model.model_result[pageNumber - 1][1])}
-              >
-                ✓
-              </Button>
+        <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginTop: 10 }}>
+          {questions.map((model, index) => (
+            <div key={index} className="mb-3" style={{ width: 800 }}>
+              <h5>Model: {model.model_name}</h5>
+              <div className="d-flex justify-content-between align-items-center" style={{ marginTop: -10 }}>
+                <p style={{ marginBottom: -3, marginRight: 2 }}>{model.model_result[pageNumber - 1][1]}</p>
+                <Button
+                  variant="success"
+                  className="rounded-circle"
+                  style={{ marginBottom: 'auto' }}
+                  onClick={() => handleQuestionAccept(model.model_result[pageNumber - 1][1])}
+                >
+                  ✓
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
-      </Col>
-      <Col></Col>
+          ))}
+        </Col>
+        <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
+        </Col>
       </Row>
     </Container>
   );
