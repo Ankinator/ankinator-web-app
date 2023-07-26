@@ -42,6 +42,8 @@ const EvaluationComp = ({ pdfFile, questions }) => {
   const handleNextPage = () => {
     if (pageNumber < totalPages) {
       setPageNumber(pageNumber + 1);
+    } else {
+      setPageNumber(1);
     }
   };
 
