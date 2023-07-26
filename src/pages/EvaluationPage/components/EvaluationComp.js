@@ -61,6 +61,10 @@ const EvaluationComp = ({ pdfFile, questions }) => {
     return acceptedQuestions.includes(question);
   };
 
+  const handleExport = () => {
+    
+  };
+
   return (
     <Container fluid className="p-0">
       <Row className="mb-3" style={{ marginTop: '10px' }}>
@@ -72,6 +76,7 @@ const EvaluationComp = ({ pdfFile, questions }) => {
           <Button onClick={handleNextPage} disabled={pageNumber === totalPages}>Next</Button>
         </Col>
         <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+          <Button onClick={handleExport} style={{ marginRight: '10px' }}>Export</Button>
         </Col>
       </Row>
       <Row >
