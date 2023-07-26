@@ -1,6 +1,6 @@
 import { Col, Container, Nav, Navbar, Row, Button } from 'react-bootstrap';
 import Image from "../../../assets/images/logo.png";
-import Profil from "../../../assets/images/Profil.svg";
+import Profil from "../../../assets/images/Profil.png";
 import { bgColors } from '../../../App';
 
 function Header() {
@@ -13,11 +13,11 @@ function Header() {
                     width="50"
                     height="50"
                 />
-                <Navbar.Brand href="#Home" style={{ color: bgColors.Text, fontSize: "xx-large", textDecoration: 'none' }}>
+                <Navbar.Brand href="/" style={{ color: bgColors.Text, fontSize: "xx-large", textDecoration: 'none' }}>
                     Ankinator
                 </Navbar.Brand>
                 <Nav className="ms-auto">
-                    <Button style={{ backgroundColor: 'transparent', borderColor: "transparent" }} onClick="test"><img alt="" src={Profil} style={{ marginRight: 5, marginLeft: 10 }} className="d-inline-block align-top" /></Button>
+                    <Button style={{ backgroundColor: 'transparent', borderColor: "transparent" }}><img alt="" src={Profil} style={{ marginRight: 5, marginLeft: 10, width: 55 }} className="d-inline-block align-top" /></Button>
                 </Nav>
             </Container>
         </Navbar>
