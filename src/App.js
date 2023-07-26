@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
 import React, { useState } from 'react';
 import './App.css';
-import { login } from './api/api';
 import UploadPage from './pages/UploadPage/UploadPage';
 import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
 import HistoryPage from './pages/HistoryPage/HistoryPage';
+import LoginPage from './pages/LoginPage/LoginPage';
 
 
 export const bgColors = {
@@ -20,11 +20,10 @@ export const bgColors = {
 
 function App() {
 
-  login();
-
   return (
       <Routes>
-        <Route path="/" element={<UploadPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/upload" element={<UploadPage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/evaluation" element={<EvaluationPage />} />
       </Routes>
