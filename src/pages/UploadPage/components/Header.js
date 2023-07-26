@@ -1,4 +1,4 @@
-import { Col, Container, Nav, Navbar, Row, Button } from 'react-bootstrap';
+import { Col, Container, Nav, Navbar, Row, Button, Dropdown } from 'react-bootstrap';
 import Image from "../../../assets/images/logo.png";
 import Profil from "../../../assets/images/Profil.png";
 import { bgColors } from '../../../App';
@@ -17,7 +17,20 @@ function Header() {
                     Ankinator
                 </Navbar.Brand>
                 <Nav className="ms-auto">
-                    <Button style={{ backgroundColor: 'transparent', borderColor: "transparent"}}><img alt="" src={Profil} style={{ marginRight: 5, marginLeft: 10, width: 55}} className="d-inline-block align-top" /></Button>
+                    <Dropdown align="end">
+                        <Dropdown.Toggle
+                            variant="link"
+                            id="dropdown-basic"
+                            style={{ backgroundColor: 'transparent', borderColor: 'transparent' }}>
+                            <img alt="" src={Profil} style={{ marginRight: 5, marginLeft: 10, width: 55 }} className="d-inline-block align-top" />
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item href="#profile">Profile</Dropdown.Item>
+                            <Dropdown.Item href="#history">History</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Item href="#logout">Logout</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </Nav>
             </Container>
         </Navbar>
