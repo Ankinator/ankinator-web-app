@@ -25,6 +25,31 @@ export const sessionLogin = async () => {
   }
 };
 
+export const login = async () => {
+  var cookie = new Cookie();
+  if (cookie.get("access_token") === undefined) {
+    try {
+      const formData = new FormData();
+      formData.append('username', 'testuser');
+      formData.append('password', 'secret');
+      const response = await axios.post(`${API_URL}/login`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      var result = await response.data;
+      cookie.set('access_token', result.access_token, { path: '/' });
+      getUser();
+      return await response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  } else {
+    getUser();
+    return;
+  }
+};
+
 export const getUser = async () => {
   var cookie = new Cookie();
   try {
@@ -37,9 +62,12 @@ export const getUser = async () => {
     return await response.data;
   } catch (error) {
     try {
-      const response = await axios.post(`${API_URL}/session`, {
+      const formData = new FormData();
+      formData.append('username', 'testuser');
+      formData.append('password', 'secret');
+      const response = await axios.post(`${API_URL}/login`, formData, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'multipart/form-data'
         }
       });
       var result = await response.data;
