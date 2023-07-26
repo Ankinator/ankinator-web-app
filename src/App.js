@@ -4,6 +4,7 @@ import './App.css';
 import { login } from './api/api';
 import UploadPage from './pages/UploadPage/UploadPage';
 import EvaluationPage from './pages/EvaluationPage/EvaluationPage';
+import HistoryPage from './pages/HistoryPage/HistoryPage';
 
 
 export const bgColors = {
@@ -24,6 +25,7 @@ function App() {
   return (
       <Routes>
         <Route path="/" element={<UploadPage />} />
+        <Route path="/history" element={<HistoryPage />} />
         <Route path="/evaluation" element={<EvaluationPage />} />
       </Routes>
   );
