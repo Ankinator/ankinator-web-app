@@ -50,6 +50,27 @@ export const login = async () => {
   }
 };
 
+export const loginWithCred = async (username, password) => {
+  var cookie = new Cookie();
+
+  try {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    const response = await axios.post(`${API_URL}/login`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    var result = await response.data;
+    cookie.set('access_token', result.access_token, { path: '/' });
+    getUser();
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getUser = async () => {
   var cookie = new Cookie();
   try {
