@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { bgColors } from '../../App';
 import { Container, Spinner } from 'react-bootstrap';
-import Header from './components/Header';
+import Header from '../../assets/components/Header';
 import EvaluationComp from './components/EvaluationComp';
 import { getResults, getResultPdf } from '../../api/api';
 import './EvaluationPage.css';
