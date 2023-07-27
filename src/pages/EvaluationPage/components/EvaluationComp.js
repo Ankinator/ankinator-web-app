@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+import {exportCards} from '../../../api/api';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-const EvaluationComp = ({ pdfFile, questions }) => {
+const EvaluationComp = ({ pdfFile, questions, documentId }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [acceptedQuestions, setAcceptedQuestions] = useState([]);
@@ -62,7 +63,7 @@ const EvaluationComp = ({ pdfFile, questions }) => {
   };
 
   const handleExport = () => {
-    
+    exportCards(documentId, acceptedQuestions);
   };
 
   return (
