@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap');
+
+
+html * {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 0.875rem;
+}
+
+h1 {
+    font-size: 3rem;
+}
+
+h2 {
+    font-size: 2.5rem;
+}
+
+h3 {
+    font-size: 1.75rem;
+}
+
+/* LoginPage.css */
+.login-page {
+    height: 100vh;
+    /* Fügt die gesamte Viewport-Höhe dem Container hinzu, um das Weißer-Fenster-Design zu erzeugen */
+}
+
+.login-box {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
