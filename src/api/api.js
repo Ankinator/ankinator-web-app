@@ -142,9 +142,12 @@ export const generateQuestions = async (extResults, selectedPages, domain, model
     const requestData = {
       pdf_document_id: extResults.pdf_document_id,
       result_id: extResults.result_id,
-      pages: selectedPages.selected.length !== 0 ? selectedPages.selected : [],
       model: model,
       domain: domain,
+    };
+
+    if (selectedPages.selected.length !== 0) {
+      requestData.pages = selectedPages.selected;
     };
 
     const response = await axios.post(`${API_URL}/generation/questions/start`, requestData, {

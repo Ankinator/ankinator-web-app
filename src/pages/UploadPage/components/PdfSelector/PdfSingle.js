@@ -94,21 +94,21 @@ const PdfSingle = ({ pdfFile, extResults }) => {
     };
 
     const handleGenerateCards = async (domain, models) => {
-        const documentIds = [];
+        const resultIds = [];
         if (models.length > 1) {
           await Promise.all(
             models.map(async (model) => {
               const id = await generateQuestions(extResults, selectedPages, domain, model.value);
-              documentIds.push(id.document_id);
+              resultIds.push(id.result_id);
             })
           );
         } else {
           const id = await generateQuestions(extResults, selectedPages, domain, models[0].value);
-          documentIds.push(id.document_id);
+          resultIds.push(id.result_id);
         }
       
         setShowPopup(false);
-        navigate('/evaluation', { state: { documentIds, pdfFile } });
+        navigate('/evaluation', { state: { resultIds } });
       };
 
     const isPageSelected = selectedPages.selected.includes(pageNumber);

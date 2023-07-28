@@ -9,7 +9,7 @@ import './EvaluationPage.css';
 
 const EvaluationPage = () => {
     const location = useLocation();
-    const { documentIds } = location.state;
+    const { resultIds } = location.state;
     const [pdfFile, setPdfFile] = useState(null);
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ const EvaluationPage = () => {
 
         const loadPdf = async () => {
             try {
-                const loadedPdf = await getResultPdf(documentIds[0]);
+                const loadedPdf = await getResultPdf(resultIds[0]);
                 if (loadedPdf.model_result === "PENDING" || loadedPdf.model_result === null) {
                     await new Promise((resolve) => setTimeout(resolve, 2500));
                     await loadPdf();
@@ -31,8 +31,8 @@ const EvaluationPage = () => {
         };
 
         const loadResults = async () => {
-            const promises = documentIds.map(async (documentId) => {
-                const loadedResults = await getResults(documentId);
+            const promises = resultIds.map(async (resultIds) => {
+                const loadedResults = await getResults(resultIds);
                 return loadedResults;
             });
             const loadedResults = await Promise.all(promises);
@@ -51,7 +51,7 @@ const EvaluationPage = () => {
 
     useEffect(() => {
         loadData();
-    }, [documentIds]);
+    }, [resultIds]);
 
     return (
         <Container style={{ maxWidth: "100%", padding: 0, height: "100%", color: "white" }}>
