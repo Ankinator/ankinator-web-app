@@ -9,7 +9,7 @@ import { uploadPdf, extractionStart, getResults } from '../../api/api';
 
 const UploadPage = () => {
   const [pdfFile, setPdfFile] = useState(null);
-  const [extPages, setExtPages] = useState(null);
+  const [extResults, setextResults] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handlePdfSelect = async (pdf) => {
@@ -24,15 +24,16 @@ const UploadPage = () => {
     }
   };
 
-  const extractionResult = async (resultId) => {
+  const extractionResult = async (result_id) => {
     try {
       //UploadPdf
-      const extResult = await getResults(resultId);
+      const extResult = await getResults(result_id);
       if (extResult.pages === null) {
         await new Promise((resolve) => setTimeout(resolve, 2500));
-        await extractionResult(resultId);
+        await extractionResult(result_id);
       } else {
-        setExtPages(extResult.pages);
+        extResult.result_id = result_id;
+        setextResults(extResult);
         setLoading(false);
       }
     } catch (error) {
@@ -51,7 +52,7 @@ const UploadPage = () => {
         </div>
       ) : (
         <>
-          <PdfSelector pdfFile={pdfFile} extPages={extPages}/>
+          <PdfSelector pdfFile={pdfFile} extResults={extResults}/>
         </>
       )}
     </Container>

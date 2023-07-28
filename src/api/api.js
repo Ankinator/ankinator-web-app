@@ -136,19 +136,20 @@ export const extractionStart = async (document_id) => {
 
 
 
-export const postSelectedPages = async (pdfFile, selectedPages, domain, model) => {
+export const generateQuestions = async (extResults, selectedPages, domain, model) => {
   var cookie = new Cookie();
   try {
-    const formData = new FormData();
-    if (selectedPages.selected.length !== 0) {
-      formData.append('pages', selectedPages.selected);
-    }
-    formData.append('file', pdfFile, pdfFile.name);
-    formData.append('model', model);
-    formData.append('domain', domain);
-    const response = await axios.post(`${API_URL}/uploadpdf`, formData, {
+    const requestData = {
+      pdf_document_id: extResults.pdf_document_id,
+      result_id: extResults.result_id,
+      pages: selectedPages.selected.length !== 0 ? selectedPages.selected : [],
+      model: model,
+      domain: domain,
+    };
+
+    const response = await axios.post(`${API_URL}/generation/questions/start`, requestData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json', // Content-Type auf 'application/json' ändern
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
     });
@@ -159,10 +160,10 @@ export const postSelectedPages = async (pdfFile, selectedPages, domain, model) =
   }
 };
 
-export const getResults = async (resultId) => {
+export const getResults = async (result_id) => {
   var cookie = new Cookie();
   try {
-    const response = await axios.get(`${API_URL}/generation/result?result_id=${resultId}`, {
+    const response = await axios.get(`${API_URL}/generation/result?result_id=${result_id}`, {
       headers: {
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
@@ -174,10 +175,10 @@ export const getResults = async (resultId) => {
   }
 };
 
-export const getResultPdf = async (documentId) => {
+export const getResultPdf = async (result_id) => {
   const cookie = new Cookie();
   try {
-    const response = await axios.get(`${API_URL}/resultpdf?document_id=${documentId}`, {
+    const response = await axios.get(`${API_URL}/generation/result/pdf?result_id=${result_id}`, {
       headers: {
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
