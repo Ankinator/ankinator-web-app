@@ -19,7 +19,7 @@ const EvaluationPage = () => {
         const loadPdf = async () => {
             try {
                 const loadedPdf = await getResultPdf(documentIds[0]);
-                if (loadedPdf.model_result === "PENDING") {
+                if (loadedPdf.model_result === "PENDING" || loadedPdf.model_result === null) {
                     await new Promise((resolve) => setTimeout(resolve, 2500));
                     await loadPdf();
                 } else {
@@ -36,7 +36,7 @@ const EvaluationPage = () => {
                 return loadedResults;
             });
             const loadedResults = await Promise.all(promises);
-            const allNotPending = loadedResults.every((result) => result.model_result !== "PENDING");
+            const allNotPending = loadedResults.every((result) => result.model_result !== "PENDING" && result.model_result !== null);
             if (allNotPending) {
                 setResults(loadedResults);
             } else {

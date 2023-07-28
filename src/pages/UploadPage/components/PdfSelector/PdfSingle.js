@@ -6,7 +6,7 @@ import { postSelectedPages } from '../../../../api/api';
 import Popup from '../Popup';
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 
-const PdfSingle = ({ pdfFile }) => {
+const PdfSingle = ({ pdfFile, extPages }) => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [selectedPages, setSelectedPages] = useState({ selected: [] });

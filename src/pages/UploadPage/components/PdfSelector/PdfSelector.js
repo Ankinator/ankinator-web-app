@@ -2,14 +2,14 @@ import React from 'react';
 import { Container} from 'react-bootstrap';
 import PdfSingle from './PdfSingle';
 
-const PdfSelector = ({ pdfFile }) => {
+const PdfSelector = ({ pdfFile, extPages }) => {
   //const [selectedOption, setSelectedOption] = useState('gallery'); // Set the default selected option
   //const handleSelect = (eventKey) => setSelectedOption(eventKey);
 
   return (
     <Container fluid className="p-0">
       {pdfFile ? (
-        <PdfSingle pdfFile={pdfFile} />
+        <PdfSingle pdfFile={pdfFile} extPages={extPages}/>
       ) : (
         <h3 style={{justifyContent: 'center', textAlign: 'center'}}>Welcome to Ankinator, a smart generator for anki flash card questions. Please upload your script and press submit. You can optionally select the pages for which you want to generate questions.</h3>
       )}
