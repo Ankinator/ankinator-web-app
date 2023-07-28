@@ -124,7 +124,7 @@ export const extractionStart = async (document_id) => {
   try {
     const response = await axios.post(`${API_URL}/generation/extraction/classifier/start?pdf_document_id=${document_id}`, null,{
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImV4cCI6MTcwODUzNzcxOH0.vxRXR8xlpzaVjwefr6aT9P_CeKx1u_bS2dJIfT7yN30'
+        'Authorization': 'Bearer ' + cookie.get('access_token')
       }
     });
 
