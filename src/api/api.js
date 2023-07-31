@@ -119,10 +119,24 @@ export const uploadPdf = async (pdfFile) => {
   }
 };
 
+export const getPdf = async (document_id) => {
+  var cookie = new Cookie();
+  try {
+    const response = await axios.get(`${API_URL}/pdf?pdf_document_id=${document_id}`, {
+      headers: {
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const extractionStart = async (document_id) => {
   var cookie = new Cookie();
   try {
-    const response = await axios.post(`${API_URL}/generation/extraction/classifier/start?pdf_document_id=${document_id}`, null,{
+    const response = await axios.post(`${API_URL}/generation/extraction/classifier/start?pdf_document_id=${document_id}`, null, {
       headers: {
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
@@ -133,8 +147,6 @@ export const extractionStart = async (document_id) => {
     console.error(error);
   }
 };
-
-
 
 export const generateQuestions = async (extResults, selectedPages, domain, model) => {
   var cookie = new Cookie();
@@ -157,6 +169,21 @@ export const generateQuestions = async (extResults, selectedPages, domain, model
       }
     });
 
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getUserPdfs = async (result_id) => {
+  var cookie = new Cookie();
+  try {
+    const response = await axios.get(`${API_URL}/users/me/pdfs`, {
+      headers: {
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+    console.log(response.data);
     return await response.data;
   } catch (error) {
     console.error(error);

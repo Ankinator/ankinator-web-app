@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { bgColors } from '../../App';
 import { Container, Spinner } from 'react-bootstrap';
 import Header from '../../assets/components/Header';
 import EvaluationComp from './components/EvaluationComp';
@@ -19,7 +18,7 @@ const EvaluationPage = () => {
         const loadPdf = async () => {
             try {
                 const loadedPdf = await getResultPdf(resultIds[0]);
-                if (loadedPdf.model_result === "PENDING" || loadedPdf.model_result === null) {
+                if (loadedPdf === undefined) {
                     await new Promise((resolve) => setTimeout(resolve, 2500));
                     await loadPdf();
                 } else {
@@ -51,6 +50,7 @@ const EvaluationPage = () => {
 
     useEffect(() => {
         loadData();
+        // eslint-disable-next-line
     }, [resultIds]);
 
     return (

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Button, Container, Row, Col, Form } from 'react-bootstrap';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
@@ -86,12 +86,12 @@ const PdfSingle = ({ pdfFile, extResults }) => {
         });
     };
 
-    const enableSubmit = () => {
+    /*const enableSubmit = () => {
         const submitButton = document.getElementById('submitButton');
         if (submitButton && selectedPages) {
             submitButton.disabled = selectedPages.selected.length === 0;
         }
-    };
+    };*/
 
     const handleGenerateCards = async (domain, models) => {
         const resultIds = [];
