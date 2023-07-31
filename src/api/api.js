@@ -50,6 +50,27 @@ export const login = async () => {
   }
 };
 
+export const loginWithCred = async (username, password) => {
+  var cookie = new Cookie();
+
+  try {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('password', password);
+    const response = await axios.post(`${API_URL}/login`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    var result = await response.data;
+    cookie.set('access_token', result.access_token, { path: '/' });
+    getUser();
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const getUser = async () => {
   var cookie = new Cookie();
   try {
@@ -80,16 +101,11 @@ export const getUser = async () => {
   }
 };
 
-export const postSelectedPages = async (pdfFile, selectedPages, domain, model) => {
+export const uploadPdf = async (pdfFile) => {
   var cookie = new Cookie();
   try {
     const formData = new FormData();
-    if (selectedPages.selected.length !== 0) {
-      formData.append('pages', selectedPages.selected);
-    }
     formData.append('file', pdfFile, pdfFile.name);
-    formData.append('model', model);
-    formData.append('domain', domain);
     const response = await axios.post(`${API_URL}/uploadpdf`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -103,25 +119,96 @@ export const postSelectedPages = async (pdfFile, selectedPages, domain, model) =
   }
 };
 
-export const getResults = async (documentId) => {
-  const cookie = new Cookie();
+export const getPdf = async (document_id) => {
+  var cookie = new Cookie();
   try {
-    const response = await axios.get(`${API_URL}/result?document_id=${documentId}`, {
+    const response = await axios.get(`${API_URL}/pdf?pdf_document_id=${document_id}`, {
       headers: {
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
     });
-    console.log(response.data);
-    return response.data;
+    return await response.data;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const getResultPdf = async (documentId) => {
+export const extractionStart = async (document_id) => {
+  var cookie = new Cookie();
+  try {
+    const response = await axios.post(`${API_URL}/generation/extraction/classifier/start?pdf_document_id=${document_id}`, null, {
+      headers: {
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const generateQuestions = async (extResults, selectedPages, domain, model) => {
+  var cookie = new Cookie();
+  try {
+    const requestData = {
+      pdf_document_id: extResults.pdf_document_id,
+      result_id: extResults.result_id,
+      model: model,
+      domain: domain,
+    };
+
+    if (selectedPages.selected.length !== 0) {
+      requestData.pages = selectedPages.selected;
+    };
+
+    const response = await axios.post(`${API_URL}/generation/questions/start`, requestData, {
+      headers: {
+        'Content-Type': 'application/json', // Content-Type auf 'application/json' ändern
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getUserPdfs = async (result_id) => {
+  var cookie = new Cookie();
+  try {
+    const response = await axios.get(`${API_URL}/users/me/pdfs`, {
+      headers: {
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+    console.log(response.data);
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getResults = async (result_id) => {
+  var cookie = new Cookie();
+  try {
+    const response = await axios.get(`${API_URL}/generation/result?result_id=${result_id}`, {
+      headers: {
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+    console.log(response.data);
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getResultPdf = async (result_id) => {
   const cookie = new Cookie();
   try {
-    const response = await axios.get(`${API_URL}/resultpdf?document_id=${documentId}`, {
+    const response = await axios.get(`${API_URL}/generation/result/pdf?result_id=${result_id}`, {
       headers: {
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
