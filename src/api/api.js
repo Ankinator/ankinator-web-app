@@ -39,7 +39,6 @@ export const login = async () => {
       });
       var result = await response.data;
       cookie.set('access_token', result.access_token, { path: '/' });
-      getUser();
       return await response.data;
     } catch (error) {
       console.error(error);
@@ -52,7 +51,6 @@ export const login = async () => {
 
 export const loginWithCred = async (username, password) => {
   var cookie = new Cookie();
-
   try {
     const formData = new FormData();
     formData.append('username', username);
@@ -64,7 +62,6 @@ export const loginWithCred = async (username, password) => {
     });
     var result = await response.data;
     cookie.set('access_token', result.access_token, { path: '/' });
-    getUser();
     return await response.data;
   } catch (error) {
     console.error(error);
@@ -93,7 +90,6 @@ export const getUser = async () => {
       });
       var result = await response.data;
       cookie.set('access_token', result.access_token, { path: '/' });
-      getUser();
       return await response.data;
     } catch (error) {
       console.error(error);
