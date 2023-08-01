@@ -1,12 +1,12 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom'
 import { Button, Container, Row, Col, Form } from 'react-bootstrap';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-import { postSelectedPages } from '../../../../api/api';
+import { generateQuestions } from '../../../../api/api';
 import Popup from '../Popup';
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
 
-const PdfSingle = ({ pdfFile }) => {
+const PdfSingle = ({ pdfFile, extResults }) => {
     const [numPages, setNumPages] = useState(null);
     const [pageNumber, setPageNumber] = useState(1);
     const [selectedPages, setSelectedPages] = useState({ selected: [] });
@@ -86,29 +86,29 @@ const PdfSingle = ({ pdfFile }) => {
         });
     };
 
-    const enableSubmit = () => {
+    /*const enableSubmit = () => {
         const submitButton = document.getElementById('submitButton');
         if (submitButton && selectedPages) {
             submitButton.disabled = selectedPages.selected.length === 0;
         }
-    };
+    };*/
 
     const handleGenerateCards = async (domain, models) => {
-        const documentIds = [];
+        const resultIds = [];
         if (models.length > 1) {
           await Promise.all(
             models.map(async (model) => {
-              const id = await postSelectedPages(pdfFile, selectedPages, domain, model.value);
-              documentIds.push(id.document_id);
+              const id = await generateQuestions(extResults, selectedPages, domain, model.value);
+              resultIds.push(id.result_id);
             })
           );
         } else {
-          const id = await postSelectedPages(pdfFile, selectedPages, domain, models[0].value);
-          documentIds.push(id.document_id);
+          const id = await generateQuestions(extResults, selectedPages, domain, models[0].value);
+          resultIds.push(id.result_id);
         }
       
         setShowPopup(false);
-        navigate('/evaluation', { state: { documentIds, pdfFile } });
+        navigate('/evaluation', { state: { resultIds } });
       };
 
     const isPageSelected = selectedPages.selected.includes(pageNumber);
