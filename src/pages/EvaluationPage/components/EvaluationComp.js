@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
+import {exportCards} from '../../../api/api';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 const EvaluationComp = ({ pdfFile, questions }) => {
@@ -42,6 +43,8 @@ const EvaluationComp = ({ pdfFile, questions }) => {
   const handleNextPage = () => {
     if (pageNumber < totalPages) {
       setPageNumber(pageNumber + 1);
+    } else {
+      setPageNumber(1);
     }
   };
 
@@ -51,8 +54,16 @@ const EvaluationComp = ({ pdfFile, questions }) => {
   };
 
   const handleQuestionAccept = (question) => {
-    setAcceptedQuestions((prevAccepted) => [...prevAccepted, question]);
+    acceptedQuestions[pageNumber - 1] = question;
     handleNextPage();
+  };
+
+  const isQuestionAccepted = (question) => {
+    return acceptedQuestions.includes(question);
+  };
+
+  const handleExport = () => {
+    exportCards(questions.resultId, acceptedQuestions);
   };
 
   return (
@@ -66,6 +77,7 @@ const EvaluationComp = ({ pdfFile, questions }) => {
           <Button onClick={handleNextPage} disabled={pageNumber === totalPages}>Next</Button>
         </Col>
         <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+          <Button onClick={handleExport} style={{ marginRight: '10px' }}>Export</Button>
         </Col>
       </Row>
       <Row >
@@ -91,14 +103,27 @@ const EvaluationComp = ({ pdfFile, questions }) => {
               <h5>Model: {model.model_name}</h5>
               <div className="d-flex justify-content-between align-items-center" style={{ marginTop: -10 }}>
                 <p style={{ marginBottom: -3, marginRight: 2 }}>{model.model_result[pageNumber - 1][1]}</p>
-                <Button
-                  variant="success"
-                  className="rounded-circle"
-                  style={{ marginBottom: 'auto' }}
-                  onClick={() => handleQuestionAccept(model.model_result[pageNumber - 1][1])}
-                >
-                  ✓
-                </Button>
+                {isQuestionAccepted(model.model_result[pageNumber - 1][1]) ? (
+                  // Render green button if question is accepted
+                  <Button
+                    variant="success"
+                    className="rounded-circle"
+                    style={{ marginBottom: 'auto' }}
+                    disabled
+                  >
+                    ✓
+                  </Button>
+                ) : (
+                  // Render gray button if question is not accepted
+                  <Button
+                    variant="secondary"
+                    className="rounded-circle"
+                    style={{ marginBottom: 'auto' }}
+                    onClick={() => handleQuestionAccept(model.model_result[pageNumber - 1][1])}
+                  >
+                    ✓
+                  </Button>
+                )}
               </div>
             </div>
           ))}

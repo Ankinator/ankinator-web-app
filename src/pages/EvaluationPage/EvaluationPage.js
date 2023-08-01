@@ -8,7 +8,7 @@ import './EvaluationPage.css';
 
 const EvaluationPage = () => {
     const location = useLocation();
-    const { resultIds } = location.state;
+    const { resultIds, item } = location.state;
     const [pdfFile, setPdfFile] = useState(null);
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -18,7 +18,7 @@ const EvaluationPage = () => {
         const loadPdf = async () => {
             try {
                 const loadedPdf = await getResultPdf(resultIds[0]);
-                if (loadedPdf === undefined) {
+                if (loadedPdf.model_result === "PENDING") {
                     await new Promise((resolve) => setTimeout(resolve, 2500));
                     await loadPdf();
                 } else {
@@ -37,6 +37,7 @@ const EvaluationPage = () => {
             const loadedResults = await Promise.all(promises);
             const allNotPending = loadedResults.every((result) => result.model_result !== "PENDING" && result.model_result !== null);
             if (allNotPending) {
+                loadedResults.resultId = resultIds[0];
                 setResults(loadedResults);
             } else {
                 await new Promise(resolve => setTimeout(resolve, 2500));
@@ -48,10 +49,24 @@ const EvaluationPage = () => {
         setLoading(false);
     };
 
+    const getHistData = async () => {
+        const loadedPdf = await getResultPdf(item.id);
+        setPdfFile(loadedPdf);
+        var loadedResults = [];
+        loadedResults.resultId = item.id;
+        loadedResults.push(item);
+        setResults(loadedResults);
+        setLoading(false);
+    };
+
     useEffect(() => {
-        loadData();
+        if (item !== undefined) {
+            getHistData();
+        } else {
+            loadData();
+        }
         // eslint-disable-next-line
-    }, [resultIds]);
+    }, [resultIds, item]);
 
     return (
         <Container style={{ maxWidth: "100%", padding: 0, height: "100%", color: "white" }}>
@@ -63,7 +78,7 @@ const EvaluationPage = () => {
             ) : (
                 <>
                     <Header />
-                    <EvaluationComp pdfFile={pdfFile} questions={results} />
+                    <EvaluationComp pdfFile={pdfFile} questions={results}/>
                 </>
             )}
         </Container>
