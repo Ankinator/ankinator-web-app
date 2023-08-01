@@ -10,7 +10,6 @@ const HistoryPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Simulierte API-Funktion zum Abrufen der Daten
   const fetchData = async () => {
     const userData = await getUser();
     const transformedData = Object.entries(userData.model_results).map(([id, item]) => ({ id, ...item }));
@@ -18,7 +17,6 @@ const HistoryPage = () => {
     setLoading(false);
   };
 
-  // Laden der Daten beim ersten Rendern
   useEffect(() => {
     fetchData();
   }, []);
@@ -32,11 +30,9 @@ const HistoryPage = () => {
           <Spinner animation="border" variant="primary" />
         </div>
       ) : (
-        // Anzeigen der Tabelle, wenn die Daten geladen sind
         <Table bordered responsive style={{ width: '95%', marginLeft: '2.5%', marginTop: '2.5%', color: 'white' }}>
           <thead>
             <tr>
-              <th>ID</th>
               <th>PDF Document</th>
               <th>Model</th>
               <th>Timestamp</th>
@@ -45,9 +41,8 @@ const HistoryPage = () => {
           <tbody>
             {data.map((item) => (
               <tr key={item.id} className="custom">
-                <td>{item.id}</td>
                 <td>
-                  {/* Hier können Sie auf den Tabelleneintrag klicken und zur Evaluation-Seite navigieren */}
+                  {}
                   <Link to={`/evaluation/${item.id}`}>{item.pdfDocument}</Link>
                 </td>
                 <td>{item.model_name}</td>
