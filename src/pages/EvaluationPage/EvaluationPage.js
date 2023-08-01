@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { bgColors } from '../../App';
 import { Container, Spinner } from 'react-bootstrap';
 import Header from '../../assets/components/Header';
 import EvaluationComp from './components/EvaluationComp';
@@ -9,7 +8,7 @@ import './EvaluationPage.css';
 
 const EvaluationPage = () => {
     const location = useLocation();
-    const { documentIds } = location.state;
+    const { resultIds } = location.state;
     const [pdfFile, setPdfFile] = useState(null);
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -18,8 +17,8 @@ const EvaluationPage = () => {
 
         const loadPdf = async () => {
             try {
-                const loadedPdf = await getResultPdf(documentIds[0]);
-                if (loadedPdf.model_result === "PENDING") {
+                const loadedPdf = await getResultPdf(resultIds[0]);
+                if (loadedPdf === undefined) {
                     await new Promise((resolve) => setTimeout(resolve, 2500));
                     await loadPdf();
                 } else {
@@ -31,12 +30,12 @@ const EvaluationPage = () => {
         };
 
         const loadResults = async () => {
-            const promises = documentIds.map(async (documentId) => {
-                const loadedResults = await getResults(documentId);
+            const promises = resultIds.map(async (resultIds) => {
+                const loadedResults = await getResults(resultIds);
                 return loadedResults;
             });
             const loadedResults = await Promise.all(promises);
-            const allNotPending = loadedResults.every((result) => result.model_result !== "PENDING");
+            const allNotPending = loadedResults.every((result) => result.model_result !== "PENDING" && result.model_result !== null);
             if (allNotPending) {
                 setResults(loadedResults);
             } else {
@@ -51,7 +50,8 @@ const EvaluationPage = () => {
 
     useEffect(() => {
         loadData();
-    }, [documentIds]);
+        // eslint-disable-next-line
+    }, [resultIds]);
 
     return (
         <Container style={{ maxWidth: "100%", padding: 0, height: "100%", color: "white" }}>
