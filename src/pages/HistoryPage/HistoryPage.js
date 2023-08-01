@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Spinner, Table } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Falls Sie react-router-dom verwenden
+import { useNavigate } from 'react-router-dom'; // useHistory für Navigation verwenden
 
 import Header from '../../assets/components/Header';
 import './HistoryPage.css';
@@ -9,6 +9,7 @@ import { getUser } from '../../api/api';
 const HistoryPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     const userData = await getUser();
@@ -20,6 +21,10 @@ const HistoryPage = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const handleClick = (item) => {
+    navigate('/evaluation', { state: { item } });  
+  };
 
   return (
     <Container fluid style={{ maxWidth: '100%', padding: 0, height: '100%', color: 'white', alignContent: 'center' }}>
@@ -40,11 +45,9 @@ const HistoryPage = () => {
           </thead>
           <tbody>
             {data.map((item) => (
-              <tr key={item.id} className="custom">
-                <td>
-                  {}
-                  <Link to={`/evaluation/${item.id}`}>{item.pdfDocument}</Link>
-                </td>
+              // Füge den onClick-Handler zur Tabellenzeile hinzu
+              <tr key={item.id} className="custom" onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
+                <td>{item.pdf_document_name}</td>
                 <td>{item.model_name}</td>
                 <td>{item.timestamp}</td>
               </tr>
