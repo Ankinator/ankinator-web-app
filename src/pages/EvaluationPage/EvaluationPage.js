@@ -63,7 +63,7 @@ const EvaluationPage = () => {
             ) : (
                 <>
                     <Header />
-                    <EvaluationComp pdfFile={pdfFile} questions={results} />
+                    <EvaluationComp pdfFile={pdfFile} questions={results} documentId={documentIds[0]}/>
                 </>
             )}
         </Container>

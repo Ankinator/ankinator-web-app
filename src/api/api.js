@@ -214,3 +214,21 @@ export const getResultPdf = async (result_id) => {
     console.error(error);
   }
 };
+
+export const exportCards = async (documentId, acceptedQuestions) => {
+  var cookie = new Cookie();
+  try {
+    const formData = new FormData();
+    formData.append('questions', acceptedQuestions);
+    const response = await axios.post(`${API_URL}/create_flashcards?document_id=${documentId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + cookie.get('access_token')
+      }
+    });
+
+    return await response.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
