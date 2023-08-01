@@ -63,7 +63,7 @@ const EvaluationComp = ({ pdfFile, questions, documentId }) => {
   };
 
   const handleExport = () => {
-    exportCards(documentId, acceptedQuestions);
+    exportCards(questions.resultId, acceptedQuestions);
   };
 
   return (
