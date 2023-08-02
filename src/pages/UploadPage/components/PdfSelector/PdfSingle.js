@@ -125,6 +125,7 @@ const PdfSingle = ({ pdfFile, extResults }) => {
             <Row ref={pageRef} style={{ height: '80vh', overflow: 'hidden', marginTop: '10px' }}>
                 <Col style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
                     <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
+
                         <Page
                             pageNumber={pageNumber}
                             renderTextLayer={false}
