@@ -95,7 +95,6 @@ const PdfSingle = ({ pdfFile, extResults }) => {
 
     const handleGenerateCards = async (domain, models) => {
         const resultIds = [];
-      
         for (const model of models) {
           const id = await generateQuestions(extResults, selectedPages, domain, model.value);
           resultIds.push(id.result_id);

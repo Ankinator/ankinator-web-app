@@ -70,7 +70,7 @@ const EvaluationComp = ({ pdfFile, questions }) => {
 
     const downloadLink = document.createElement('a');
     downloadLink.href = URL.createObjectURL(blob);
-    downloadLink.download = `deck_${questions.resultId}.apkg`;
+    downloadLink.download = 'Ankideck.apkg';
     downloadLink.click();
     URL.revokeObjectURL(downloadLink.href);
   };
