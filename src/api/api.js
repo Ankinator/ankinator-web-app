@@ -149,18 +149,19 @@ export const generateQuestions = async (extResults, selectedPages, domain, model
   try {
     const requestData = {
       pdf_document_id: extResults.pdf_document_id,
-      result_id: extResults.result_id,
       model: model,
       domain: domain,
     };
 
     if (selectedPages.selected.length !== 0) {
       requestData.pages = selectedPages.selected;
+    } else {
+      requestData.pages = extResults.pages;
     };
 
     const response = await axios.post(`${API_URL}/generation/questions/start`, requestData, {
       headers: {
-        'Content-Type': 'application/json', // Content-Type auf 'application/json' ändern
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
     });
@@ -215,16 +216,20 @@ export const getResultPdf = async (result_id) => {
   }
 };
 
-export const exportCards = async (documentId, acceptedQuestions) => {
+export const exportCards = async (result_id, acceptedQuestions) => {
   var cookie = new Cookie();
   try {
-    const formData = new FormData();
-    formData.append('questions', acceptedQuestions);
-    const response = await axios.post(`${API_URL}/create_flashcards?document_id=${documentId}`, formData, {
+    const requestData = {
+      result_id: result_id,
+      questions: acceptedQuestions
+    };
+    
+    const response = await axios.post(`${API_URL}/create_flashcards`, requestData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + cookie.get('access_token')
-      }
+      },
+      responseType: "blob"
     });
 
     return await response.data;
