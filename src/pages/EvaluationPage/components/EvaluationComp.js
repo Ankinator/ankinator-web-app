@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
-import {exportCards} from '../../../api/api';
+import { exportCards } from '../../../api/api';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-const EvaluationComp = ({ pdfFile, questions, documentId }) => {
+const EvaluationComp = ({ pdfFile, questions }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [acceptedQuestions, setAcceptedQuestions] = useState([]);
@@ -54,16 +54,24 @@ const EvaluationComp = ({ pdfFile, questions, documentId }) => {
   };
 
   const handleQuestionAccept = (question) => {
-    acceptedQuestions[pageNumber - 1] = question;
+    const updatedQuestions = [...acceptedQuestions];
+    updatedQuestions[pageNumber - 1] = question[0];
+    setAcceptedQuestions(updatedQuestions);
     handleNextPage();
   };
 
   const isQuestionAccepted = (question) => {
-    return acceptedQuestions.includes(question);
+    return acceptedQuestions.includes(question[0]);
   };
 
-  const handleExport = () => {
-    exportCards(questions.resultId, acceptedQuestions);
+  const handleExport = async () => {
+    const exportedCards = await exportCards(questions.resultId, acceptedQuestions);
+    const blob = new Blob([exportedCards], { type: 'application/octet-stream' });
+    
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = `deck_${questions.resultId}.apkg`;
+    downloadLink.click();
   };
 
   return (

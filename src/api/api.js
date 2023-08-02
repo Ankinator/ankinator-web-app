@@ -160,7 +160,7 @@ export const generateQuestions = async (extResults, selectedPages, domain, model
 
     const response = await axios.post(`${API_URL}/generation/questions/start`, requestData, {
       headers: {
-        'Content-Type': 'application/json', // Content-Type auf 'application/json' ändern
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
     });
@@ -215,14 +215,17 @@ export const getResultPdf = async (result_id) => {
   }
 };
 
-export const exportCards = async (documentId, acceptedQuestions) => {
+export const exportCards = async (result_id, acceptedQuestions) => {
   var cookie = new Cookie();
   try {
-    const formData = new FormData();
-    formData.append('questions', acceptedQuestions);
-    const response = await axios.post(`${API_URL}/create_flashcards?document_id=${documentId}`, formData, {
+    const requestData = {
+      result_id: result_id,
+      questions: acceptedQuestions
+    };
+
+    const response = await axios.post(`${API_URL}/create_flashcards`, requestData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + cookie.get('access_token')
       }
     });
