@@ -1,0 +1,5 @@
+.gray-out-page {
+    opacity: 0.5; /* Hier können Sie die gewünschte Opazität anpassen */
+    pointer-events: none; /* Dadurch wird die Mausinteraktion auf dieser Seite deaktiviert */
+    user-select: none; /* Dadurch wird die Auswahl auf dieser Seite deaktiviert */
+  }

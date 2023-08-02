@@ -5,6 +5,7 @@ import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { generateQuestions } from '../../../../api/api';
 import Popup from '../Popup';
 import "react-pdf/dist/esm/Page/AnnotationLayer.css"
+import "./PdfSingle.css";
 
 const PdfSingle = ({ pdfFile, extResults }) => {
     const [numPages, setNumPages] = useState(null);
@@ -27,10 +28,6 @@ const PdfSingle = ({ pdfFile, extResults }) => {
         setPosition(0);
         setShowPopup(false);
     };
-
-    /*useEffect(() => {
-        enableSubmit();
-    }, [selectedPages]);*/
 
     const goToPrevPage = () => {
         setPosition(pageRef.current.scrollTop);
@@ -86,13 +83,6 @@ const PdfSingle = ({ pdfFile, extResults }) => {
         });
     };
 
-    /*const enableSubmit = () => {
-        const submitButton = document.getElementById('submitButton');
-        if (submitButton && selectedPages) {
-            submitButton.disabled = selectedPages.selected.length === 0;
-        }
-    };*/
-
     const handleGenerateCards = async (domain, models) => {
         const resultIds = [];
         for (const model of models) {
@@ -106,6 +96,7 @@ const PdfSingle = ({ pdfFile, extResults }) => {
       
 
     const isPageSelected = selectedPages.selected.includes(pageNumber);
+    const isPageNotInExtResults = !extResults.pages.includes(pageNumber);
 
     return (
         <Container fluid className="p-0">
@@ -134,9 +125,14 @@ const PdfSingle = ({ pdfFile, extResults }) => {
             <Row ref={pageRef} style={{ height: '80vh', overflow: 'hidden', marginTop: '10px' }}>
                 <Col style={{ display: 'flex', justifyContent: 'center', textAlign: 'center' }}>
                     <Document file={pdfFile} onLoadSuccess={onDocumentLoadSuccess}>
-                        <Page pageNumber={pageNumber} renderTextLayer={false} onLoadSuccess={() => {
-                            pageRef.current.scrollTo({ top: position });
-                        }}
+
+                        <Page
+                            pageNumber={pageNumber}
+                            renderTextLayer={false}
+                            onLoadSuccess={() => {
+                                pageRef.current.scrollTo({ top: position });
+                            }}
+                            className={isPageNotInExtResults ? 'gray-out-page' : ''} // Apply CSS class if page is in extResults.pages
                         />
                     </Document>
                 </Col>
