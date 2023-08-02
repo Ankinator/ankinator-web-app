@@ -222,12 +222,13 @@ export const exportCards = async (result_id, acceptedQuestions) => {
       result_id: result_id,
       questions: acceptedQuestions
     };
-
+    
     const response = await axios.post(`${API_URL}/create_flashcards`, requestData, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + cookie.get('access_token')
-      }
+      },
+      responseType: "blob"
     });
 
     return await response.data;

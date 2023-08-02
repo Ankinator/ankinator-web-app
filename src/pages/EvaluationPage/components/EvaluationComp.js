@@ -67,11 +67,12 @@ const EvaluationComp = ({ pdfFile, questions }) => {
   const handleExport = async () => {
     const exportedCards = await exportCards(questions.resultId, acceptedQuestions);
     const blob = new Blob([exportedCards], { type: 'application/octet-stream' });
-    
+
     const downloadLink = document.createElement('a');
     downloadLink.href = URL.createObjectURL(blob);
     downloadLink.download = `deck_${questions.resultId}.apkg`;
     downloadLink.click();
+    URL.revokeObjectURL(downloadLink.href);
   };
 
   return (
