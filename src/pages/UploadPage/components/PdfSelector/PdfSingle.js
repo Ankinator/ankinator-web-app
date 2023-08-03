@@ -31,6 +31,7 @@ const PdfSingle = ({ pdfFile, extResults }) => {
 
     useEffect(() => {
         enableSubmit();
+        // eslint-disable-next-line
     }, [selectedPages]);
 
     const enableSubmit = () => {
