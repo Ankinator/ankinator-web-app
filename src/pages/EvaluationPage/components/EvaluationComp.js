@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { Document, Page } from 'react-pdf/dist/esm/entry.webpack';
 import { exportCards } from '../../../api/api';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-const EvaluationComp = ({ pdfFile, questions }) => {
+const EvaluationComp = ({ pdfFile, questions, updateQuestions }) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPages, setTotalPages] = useState();
   const [acceptedQuestions, setAcceptedQuestions] = useState([]);
-  const [pdfData, setPdfData] = useState(null); // State zum Speichern der dekodierten PDF-Daten
+  const [pdfData, setPdfData] = useState(null);
 
-  useEffect(() => {
+  /*useEffect(() => {
     setAcceptedQuestions([]);
     setPageNumber(1);
-  }, [questions]);
+  }, [questions]);*/
 
   useEffect(() => {
     // Funktion zum Dekodieren der base64-kodierten Daten
@@ -53,6 +53,12 @@ const EvaluationComp = ({ pdfFile, questions }) => {
     console.log(`Number of pages: ${numPages}`);
   };
 
+  const handleQuestionEdit = (index, editedQuestion) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[index].model_result[pageNumber - 1][1][0] = editedQuestion;
+    updateQuestions(updatedQuestions);
+  };
+
   const handleQuestionAccept = (question) => {
     const updatedQuestions = [...acceptedQuestions];
     updatedQuestions[pageNumber - 1] = question[0];
@@ -77,7 +83,7 @@ const EvaluationComp = ({ pdfFile, questions }) => {
 
   return (
     <Container fluid className="p-0">
-      <Row className="mb-3" style={{ marginTop: '10px' }}>
+      <Row className="mb-3" style={{ marginTop: '15px' }}>
         <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'start' }}>
         </Col>
         <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -86,7 +92,7 @@ const EvaluationComp = ({ pdfFile, questions }) => {
           <Button onClick={handleNextPage} disabled={pageNumber === totalPages}>Next</Button>
         </Col>
         <Col style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
-          <Button onClick={handleExport} style={{ marginRight: '10px' }}>Export</Button>
+          <Button onClick={handleExport} style={{ marginRight: '10px' }} disabled={acceptedQuestions.length === 0 ? true : false}>Export</Button>
         </Col>
       </Row>
       <Row >
@@ -109,9 +115,15 @@ const EvaluationComp = ({ pdfFile, questions }) => {
         <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'start', marginTop: 10 }}>
           {questions.map((model, index) => (
             <div key={index} className="mb-3" style={{ width: 800 }}>
-              <h5>Model: {model.model_name}</h5>
+              <h5 style={{ marginBottom: 10 }}>Model: {model.model_name}</h5>
               <div className="d-flex justify-content-between align-items-center" style={{ marginTop: -10 }}>
-                <p style={{ marginBottom: -3, marginRight: 2 }}>{model.model_result[pageNumber - 1][1]}</p>
+              <Form.Control
+                  type="text"
+                  value={model.model_result[pageNumber - 1][1]}
+                  onChange={(e) => handleQuestionEdit(index, e.target.value)}
+                  disabled={isQuestionAccepted(model.model_result[pageNumber - 1][1]) ? true : false}
+                  style={{ marginRight: 10 }}
+                />
                 {isQuestionAccepted(model.model_result[pageNumber - 1][1]) ? (
                   // Render green button if question is accepted
                   <Button

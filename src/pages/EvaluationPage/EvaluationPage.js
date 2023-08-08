@@ -59,6 +59,10 @@ const EvaluationPage = () => {
         setLoading(false);
     };
 
+    const updateQuestions = (updatedQuestions) => {
+        setResults(updatedQuestions);
+      };
+
     useEffect(() => {
         if (item !== undefined) {
             getHistData();
@@ -82,7 +86,7 @@ const EvaluationPage = () => {
             ) : (
                 <>
                     <Header />
-                    <EvaluationComp pdfFile={pdfFile} questions={results} />
+                    <EvaluationComp pdfFile={pdfFile} questions={results} updateQuestions={updateQuestions}/>
                 </>
             )}
         </Container>
