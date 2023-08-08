@@ -1,4 +1,4 @@
-import { Col, Container, Nav, Navbar, Row, Button, Dropdown } from 'react-bootstrap';
+import { Container, Nav, Navbar, Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'
 import Image from "../images/logo.png";
 import Profil from "../images/Profil.png";
