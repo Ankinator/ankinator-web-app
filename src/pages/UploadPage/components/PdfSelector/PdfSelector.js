@@ -11,7 +11,7 @@ const PdfSelector = ({ pdfFile, extResults }) => {
       {pdfFile ? (
         <PdfSingle pdfFile={pdfFile} extResults={extResults}/>
       ) : (
-        <h3 style={{justifyContent: 'center', textAlign: 'center'}}>Welcome to Ankinator, a smart generator for anki flash card questions. Please upload your script and press submit. You can optionally select the pages for which you want to generate questions.</h3>
+        <h3 style={{justifyContent: 'center', textAlign: 'center'}}>Welcome to Ankinator, a smart generator for Anki card questions. Please upload or select a script and click "Submit". You can optionally change the automatically selected pages for question generation.</h3>
       )}
     </Container>
 
