@@ -71,7 +71,7 @@ const UploadPdfForm = ({ onPdfUpload, onPdfSelect }) => {
               classNamePrefix="select"
               onChange={handlePdfSelect}
               styles={customStyles}
-              placeholder="Select a pdf"
+              placeholder="Select PDF"
             />
           </Form.Group>
         </Col>
