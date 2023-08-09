@@ -1,4 +1,4 @@
-import { Col, Container, Nav, Navbar, Row, Button, Dropdown } from 'react-bootstrap';
+import { Container, Nav, Navbar, Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'
 import Image from "../images/logo.png";
 import Profil from "../images/Profil.png";
@@ -15,7 +15,7 @@ function Header() {
       };
 
     return (
-        <Navbar style={{ background: 'linear-gradient(to left, rgba(42, 152, 225, 0.7), rgba(167, 213, 243, 0.7))' }} expand="lg">
+        <Navbar style={{ background: 'linear-gradient(to left, rgba(42, 152, 225, 0.7), rgba(167, 213, 243, 0.7))', height: 65 }} expand="lg">
             <Container style={{ maxWidth: "100%", display: "flex" }}>
                 <img
                     alt="VR Stage Planner Logo"
