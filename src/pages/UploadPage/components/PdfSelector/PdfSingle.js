@@ -108,7 +108,6 @@ const PdfSingle = ({ pdfFile, extResults }) => {
       
 
     const isPageSelected = selectedPages.selected.includes(pageNumber);
-    const isPageNotInExtResults = !extResults.pages.includes(pageNumber);
 
     return (
         <Container fluid className="p-0">
@@ -144,7 +143,7 @@ const PdfSingle = ({ pdfFile, extResults }) => {
                             onLoadSuccess={() => {
                                 pageRef.current.scrollTo({ top: position });
                             }}
-                            className={isPageNotInExtResults ? 'gray-out-page' : ''} // Apply CSS class if page is in extResults.pages
+                            className={isPageSelected ? '' : 'gray-out-page'} // Apply CSS class if page is in extResults.pages
                         />
                     </Document>
                 </Col>
