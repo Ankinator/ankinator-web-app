@@ -9,9 +9,9 @@ const Popup = ({ show, handleClose, handleGenerateCards }) => {
   const [model, setModel] = useState([]);
 
   const options = [
-    { value: 'DEMO', label: 'DEMO' },
     { value: 'CHAT_GPT', label: 'CHAT_GPT' },
-    { value: 'T5', label: 'T5' }
+    { value: 'T5', label: 'T5' },
+    { value: 'VIT_GPT2', label: 'VIT_GPT2' },
   ];
 
   useEffect(() => {

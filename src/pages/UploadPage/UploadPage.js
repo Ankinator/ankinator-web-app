@@ -76,7 +76,7 @@ const UploadPage = () => {
       <UploadPdfForm onPdfUpload={handlePdfUpload} onPdfSelect={handlePdfSelect} />
       {loading ? (
         <div className="overlay">
-          <p className="overlay-text" style={{ marginTop: 15, marginRight: 10 }}>Extracting pdf, please wait</p>
+          <p className="overlay-text" style={{ marginTop: 15, marginRight: 10 }}>Extracting PDF, please wait</p>
           <Spinner animation="border" variant="primary" />
         </div>
       ) : (
